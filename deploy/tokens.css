@@ -1,0 +1,254 @@
+/*
+ * Victor Artifact Kit · tokens.css · v1.1
+ * Updated 2026-05-25: greens / oranges rescinded per Victor.
+ * New palette: paper + near-black + signal red. Electric blue as info-only.
+ * Dark variant: all-black-with-red (opt-in via [data-theme="dark"]).
+ *
+ * Import once at the top of any artifact:
+ *   <link rel="stylesheet" href="tokens.css">
+ *
+ * Style components by var(--v-*) ONLY. No raw hex literals in component CSS.
+ */
+
+:root {
+  /* ─── Palette · paper default ─── */
+  --v-bg:           #FAFAF7;          /* paper, page surface */
+  --v-bg-2:         #F1F0EB;          /* subdued surface, code blocks */
+  --v-bg-3:         #E5E4DE;          /* chip / tag bg, hover surface */
+  --v-surface:      #FFFFFF;          /* card / panel */
+  --v-surface-up:   #FFFFFF;          /* elevated card on hover */
+
+  /* Ink (text scale) */
+  --v-ink:          #0E0E0E;          /* primary, deep near-black */
+  --v-ink-2:        #2E2E2E;          /* secondary */
+  --v-ink-3:        #5A5A5A;          /* tertiary, meta */
+  --v-ink-mute:     #9A9A96;          /* muted, captions */
+
+  /* Rule */
+  --v-rule-soft:    #E5E4DE;
+  --v-rule:         #D6D5CF;
+  --v-rule-strong:  #B8B6AC;
+
+  /* Accent — RED-ORANGE (canon #E8552D). One per surface. Used for: Steve's pick, recommended, live state, accent rule, hover. */
+  --v-accent:       #E8552D;          /* signal red */
+  --v-accent-soft:  #FCEFE9;
+  --v-accent-deep:  #C43E1A;
+  --v-accent-hover: #C43E1A;
+
+  /* Info — electric blue. Used SPARINGLY for: links, info chips, neutral data viz. NEVER as a CTA fill. */
+  --v-info:         #1E5FE3;
+  --v-info-soft:    #E5EEFB;
+  --v-info-deep:    #1648B0;
+
+  /* Ink fill alt — when CTAs want quiet authority instead of red */
+  --v-ink-fill:     #0E0E0E;
+
+  /* Semantic (used sparingly, muted) */
+  --v-ok:           #1F8A4C;
+  --v-ok-bg:        #E5F3EB;
+  --v-warn:         #B5651D;
+  --v-warn-bg:      #FBEFDC;
+  --v-gate:         #E8552D;          /* gate = same red as accent */
+  --v-gate-bg:      #FCEFE9;
+
+  /* Type stack — all free from Google Fonts */
+  --v-f-display:    'Inter Tight', 'Fraunces', 'Source Serif 4', system-ui, sans-serif;
+  --v-f-body:       'Inter Tight', 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --v-f-mono:       'JetBrains Mono', 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+
+  /* Sizes */
+  --v-t-display:    clamp(36px, 5vw, 56px);
+  --v-t-h1:         clamp(28px, 3.5vw, 40px);
+  --v-t-h2:         clamp(22px, 2.4vw, 30px);
+  --v-t-h3:         18px;
+  --v-t-lead:       19px;
+  --v-t-body:       16px;
+  --v-t-small:      14px;
+  --v-t-xs:         12px;
+  --v-t-label:      11px;
+
+  /* Weights */
+  --v-w-regular:    400;
+  --v-w-medium:     500;
+  --v-w-semibold:   600;
+  --v-w-bold:       700;
+  --v-w-black:      800;
+
+  /* Leading */
+  --v-lh-tight:     1.1;
+  --v-lh-snug:      1.25;
+  --v-lh-normal:    1.55;
+  --v-lh-relaxed:   1.7;
+
+  /* Tracking */
+  --v-tr-tight:     -0.02em;
+  --v-tr-snug:      -0.01em;
+  --v-tr-normal:    0;
+  --v-tr-wide:      0.04em;
+  --v-tr-label:     0.08em;
+
+  /* Space — 8pt grid */
+  --v-s-1: 4px;   --v-s-2: 8px;   --v-s-3: 12px;  --v-s-4: 16px;  --v-s-5: 24px;
+  --v-s-6: 32px;  --v-s-7: 48px;  --v-s-8: 64px;  --v-s-9: 96px;  --v-s-10: 128px;
+
+  /* Radius — vary semantically */
+  --v-r-sharp:      2px;
+  --v-r-small:      4px;
+  --v-r-medium:     6px;
+  --v-r-large:      10px;
+  --v-r-full:       9999px;
+
+  /* Border */
+  --v-b:            1px;
+  --v-b-thick:      2px;
+  --v-b-accent:     4px;
+
+  /* Motion */
+  --v-dur-fast:     120ms;
+  --v-dur:          200ms;
+  --v-dur-slow:     320ms;
+  --v-ease:         cubic-bezier(0.2, 0, 0, 1);
+  --v-ease-emph:    cubic-bezier(0.3, 0, 0, 1);
+
+  /* Shadow */
+  --v-shadow-card:  0 1px 2px rgba(14,14,14,0.04), 0 4px 12px -4px rgba(14,14,14,0.06);
+  --v-shadow-up:    0 8px 24px -8px rgba(14,14,14,0.14);
+
+  /* Layout */
+  --v-w-narrow:     720px;
+  --v-w:            1100px;
+  --v-w-wide:       1280px;
+}
+
+/* ─── Dark variant — opt-in: all-black-with-red ─── */
+[data-theme="dark"] {
+  --v-bg:           #0A0A0A;
+  --v-bg-2:         #141414;
+  --v-bg-3:         #1E1E1E;
+  --v-surface:      #141414;
+  --v-surface-up:   #1E1E1E;
+  --v-ink:          #FAFAF7;
+  --v-ink-2:        #C9C8C2;
+  --v-ink-3:        #8C8C8C;
+  --v-ink-mute:     #5A5A5A;
+  --v-rule-soft:    #1E1E1E;
+  --v-rule:         #2E2E2E;
+  --v-rule-strong:  #4A4A4A;
+  --v-accent:       #FF3B30;          /* brighter red on black */
+  --v-accent-soft:  #2E0F0D;
+  --v-accent-deep:  #C5251D;
+  --v-accent-hover: #E5342B;
+  --v-info:         #4A8FFF;
+  --v-info-soft:    #0F1F3D;
+}
+
+/* ─── Reset + base ─── */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--v-bg);
+  color: var(--v-ink);
+  font-family: var(--v-f-body);
+  font-size: var(--v-t-body);
+  line-height: var(--v-lh-normal);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ─── Type primitives ─── */
+.v-display, .v-h1, .v-h2 {
+  font-family: var(--v-f-display);
+  font-weight: var(--v-w-bold);
+  letter-spacing: var(--v-tr-tight);
+  line-height: var(--v-lh-tight);
+  color: var(--v-ink);
+  margin: 0;
+}
+.v-display { font-size: var(--v-t-display); font-weight: var(--v-w-black); }
+.v-h1      { font-size: var(--v-t-h1); }
+.v-h2      { font-size: var(--v-t-h2); letter-spacing: var(--v-tr-snug); line-height: var(--v-lh-snug); }
+.v-h3 {
+  font-family: var(--v-f-body); font-weight: var(--v-w-semibold);
+  font-size: var(--v-t-h3); line-height: var(--v-lh-snug); margin: 0;
+}
+.v-lead { font-size: var(--v-t-lead); line-height: var(--v-lh-relaxed); color: var(--v-ink-2); max-width: 65ch; }
+.v-body { font-size: var(--v-t-body); color: var(--v-ink-2); line-height: var(--v-lh-normal); }
+.v-small { font-size: var(--v-t-small); color: var(--v-ink-3); }
+.v-label {
+  font-family: var(--v-f-mono); font-size: var(--v-t-label); font-weight: var(--v-w-medium);
+  letter-spacing: var(--v-tr-label); text-transform: uppercase; color: var(--v-ink-3);
+}
+.v-mono { font-family: var(--v-f-mono); font-size: 0.92em; }
+
+/* ─── Buttons ─── */
+.v-btn {
+  display: inline-flex; align-items: center; gap: var(--v-s-2);
+  font-family: var(--v-f-body); font-weight: var(--v-w-semibold);
+  font-size: var(--v-t-small);
+  padding: 10px 18px;
+  border-radius: var(--v-r-sharp);
+  border: 1px solid transparent;
+  background: var(--v-ink); color: var(--v-bg);
+  text-decoration: none; cursor: pointer;
+  transition: background var(--v-dur-fast) var(--v-ease), color var(--v-dur-fast) var(--v-ease);
+}
+.v-btn:hover { background: var(--v-accent); color: #fff; }
+.v-btn--accent { background: var(--v-accent); color: #fff; }
+.v-btn--accent:hover { background: var(--v-accent-deep); }
+.v-btn--ghost {
+  background: transparent; color: var(--v-ink); border-color: var(--v-rule);
+}
+.v-btn--ghost:hover { border-color: var(--v-accent); color: var(--v-accent); background: transparent; }
+.v-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--v-accent-soft); }
+
+/* ─── Card / chip / rule ─── */
+.v-card {
+  background: var(--v-surface);
+  border: 1px solid var(--v-rule-soft);
+  border-radius: var(--v-r-medium);
+  padding: var(--v-s-5);
+}
+.v-card--featured { border-left: var(--v-b-accent) solid var(--v-accent); padding-left: 28px; }
+
+.v-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--v-f-mono); font-size: var(--v-t-xs);
+  padding: 3px 10px;
+  background: var(--v-bg-3); color: var(--v-ink-2);
+  border-radius: var(--v-r-small);
+  letter-spacing: 0.02em;
+}
+.v-chip--ok   { background: var(--v-ok-bg);   color: var(--v-ok); }
+.v-chip--warn { background: var(--v-warn-bg); color: var(--v-warn); }
+.v-chip--gate { background: var(--v-gate-bg); color: var(--v-gate); }
+.v-chip--info { background: var(--v-info-soft); color: var(--v-info); }
+.v-chip--pick { background: var(--v-accent); color: #fff; font-weight: var(--v-w-semibold); }
+
+.v-rule { border: none; border-top: 1px solid var(--v-rule); margin: var(--v-s-7) 0; }
+
+.v-eyebrow {
+  font-family: var(--v-f-mono); font-size: var(--v-t-label);
+  letter-spacing: var(--v-tr-label); text-transform: uppercase;
+  color: var(--v-ink-3); margin-bottom: var(--v-s-3);
+  display: flex; align-items: center; gap: var(--v-s-3);
+}
+.v-eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--v-accent); }
+
+a { color: var(--v-info); text-decoration: underline; text-decoration-color: var(--v-rule-strong); text-underline-offset: 3px; transition: color var(--v-dur-fast); }
+a:hover { color: var(--v-accent); text-decoration-color: var(--v-accent); }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; font-family: var(--v-f-body); font-size: var(--v-t-small); margin: var(--v-s-4) 0; }
+th { font-family: var(--v-f-mono); font-size: var(--v-t-label); letter-spacing: var(--v-tr-label); text-transform: uppercase; color: var(--v-ink-3); background: var(--v-bg-2); text-align: left; padding: 12px; border-bottom: 1px solid var(--v-rule); }
+td { padding: 12px; border-bottom: 1px solid var(--v-rule-soft); vertical-align: top; color: var(--v-ink-2); }
+td.pick { background: var(--v-accent-soft); color: var(--v-accent-deep); font-weight: var(--v-w-semibold); }
+
+.v-wrap { max-width: var(--v-w); margin: 0 auto; padding: var(--v-s-7) var(--v-s-5); }
+.v-wrap-narrow { max-width: var(--v-w-narrow); margin: 0 auto; padding: var(--v-s-7) var(--v-s-5); }
+
+.v-code {
+  background: var(--v-bg-2); border: 1px solid var(--v-rule-soft);
+  border-radius: var(--v-r-medium); padding: var(--v-s-5);
+  font-family: var(--v-f-mono); font-size: var(--v-t-small); line-height: 1.6;
+  color: var(--v-ink-2); overflow-x: auto;
+}

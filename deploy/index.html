@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Guardrail Repo Review — OpenClaw</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  :root{ --maxw: 1080px; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; background:var(--v-bg,#fff); color:var(--v-ink,#1c1a17); }
+  body{ font-family:var(--v-f-body,"Inter"),system-ui,sans-serif; line-height:var(--v-lh-relaxed,1.6); -webkit-font-smoothing:antialiased; }
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 24px; }
+  h1,h2,h3{ font-family:var(--v-f-display,"Fraunces"),Georgia,serif; font-weight:600; line-height:1.12; letter-spacing:-.01em; color:var(--v-ink,#1c1a17); }
+  h1{ font-size:clamp(2.1rem,5vw,3.4rem); margin:0 0 .3em; }
+  h2{ font-size:clamp(1.5rem,3vw,2.05rem); margin:2.6em 0 .5em; }
+  h3{ font-size:1.18rem; margin:1.8em 0 .4em; }
+  .eyebrow{ font-family:var(--v-f-mono,"JetBrains Mono"),monospace; font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:var(--v-accent,#e8552d); font-weight:600; }
+  a{ color:var(--v-accent-deep,#c43e1a); text-underline-offset:3px; }
+  .mono{ font-family:var(--v-f-mono,"JetBrains Mono"),monospace; }
+  code{ font-family:var(--v-f-mono,"JetBrains Mono"),monospace; font-size:.86em; background:var(--v-bg-3,#f1efe9); padding:.1em .4em; border-radius:4px; }
+  header.hero{ padding:72px 0 26px; border-bottom:2px solid var(--v-ink,#1c1a17); }
+  .lede{ font-size:1.18rem; color:var(--v-ink-2,#3a3630); max-width:70ch; margin:.6em 0 0; }
+  .meta{ margin-top:22px; font-family:var(--v-f-mono,"JetBrains Mono"),monospace; font-size:.76rem; color:var(--v-ink-mute,#7a746b); letter-spacing:.04em; }
+  .tldr{ background:var(--v-bg-2,#fafaf7); border:1px solid var(--v-b,#e6e2d9); border-left:4px solid var(--v-accent,#e8552d); border-radius:var(--v-r-medium,10px); padding:22px 26px; margin:30px 0; }
+  .tldr h2{ margin:0 0 .3em; font-size:1.05rem; font-family:var(--v-f-mono,"JetBrains Mono"),monospace; letter-spacing:.1em; text-transform:uppercase; color:var(--v-ink,#1c1a17); }
+  .tldr p{ margin:.5em 0; font-size:1.06rem; }
+  .verdict{ font-family:var(--v-f-display),serif; font-size:1.35rem; color:var(--v-accent-deep,#c43e1a); font-weight:700; }
+  table{ width:100%; border-collapse:collapse; margin:1.2em 0; font-size:.94rem; }
+  th,td{ text-align:left; padding:11px 13px; border-bottom:1px solid var(--v-b,#e6e2d9); vertical-align:top; }
+  th{ font-family:var(--v-f-mono,"JetBrains Mono"),monospace; font-size:.7rem; letter-spacing:.08em; text-transform:uppercase; color:var(--v-ink-mute,#7a746b); border-bottom:2px solid var(--v-ink,#1c1a17); }
+  tr:last-child td{ border-bottom:none; }
+  .pill{ display:inline-block; font-family:var(--v-f-mono),monospace; font-size:.68rem; font-weight:700; letter-spacing:.05em; padding:3px 9px; border-radius:999px; white-space:nowrap; }
+  .p-reject{ background:#fbe9e3; color:var(--v-accent-deep,#c43e1a); }
+  .p-danger{ background:#c43e1a; color:#fff; }
+  .p-covered{ background:#e6efe8; color:var(--v-ok,#3f6b4a); }
+  .p-partial{ background:#f4edd8; color:var(--v-gate,#9a7d28); }
+  .p-high{ background:#e6efe8; color:#3f6b4a; }
+  .p-med{ background:#f4edd8; color:#9a7d28; }
+  .diagram{ background:var(--v-bg-2,#fafaf7); border:1px solid var(--v-b,#e6e2d9); border-radius:var(--v-r-large,14px); padding:20px; margin:26px 0; overflow-x:auto; }
+  .diagram svg{ display:block; width:100%; height:auto; min-width:640px; }
+  .note{ border:1px solid var(--v-b,#e6e2d9); border-radius:var(--v-r-medium,10px); padding:16px 20px; margin:20px 0; background:#fff; }
+  .note.warn{ border-left:4px solid var(--v-accent,#e8552d); background:#fdf4f1; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media(max-width:720px){ .grid2{ grid-template-columns:1fr; } }
+  .card{ background:var(--v-bg-2,#fafaf7); border:1px solid var(--v-b,#e6e2d9); border-radius:var(--v-r-medium,10px); padding:18px 20px; }
+  .card h3{ margin-top:0; }
+  ul.tight{ margin:.4em 0; padding-left:1.2em; } ul.tight li{ margin:.3em 0; }
+  footer{ margin:64px 0 40px; padding-top:22px; border-top:1px solid var(--v-b,#e6e2d9); font-family:var(--v-f-mono),monospace; font-size:.74rem; color:var(--v-ink-mute,#7a746b); line-height:1.7; }
+  .steve-pick{ box-shadow:inset 3px 0 0 var(--v-accent,#e8552d); }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">OpenClaw · Frontier Review · 2026-09-17</div>
+    <h1>Three guardrail repos, weighed against the fabric we already run</h1>
+    <p class="lede">You asked whether three GitHub guardrail/gating projects are worth pulling into OpenClaw. Short answer: install none. Our own guard fabric already does what they do — and on the one that matters most, security, we're ahead of the security tool.</p>
+    <div class="meta">RESEARCH → FINDINGS → CODEX RED-TEAM → RECONCILED → PROMPT CONTRACT → CODEX RED-TEAM OF THE CONTRACT</div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="tldr">
+    <h2>TL;DR</h2>
+    <p class="verdict">Verdict: install none of the three. Mine 0–2 patterns natively, both gated.</p>
+    <p>All three are real but tiny and new (roughly 9, 12, and 27 stars; ClawGuard has just 5 commits). Everything they enforce — read-before-edit, plan-before-done, dangerous-command blocking, secret scrubbing, loop breaking, approval gates — OpenClaw already enforces, several at a deeper level than the repos. Installing any of them would <em>add</em> processes and risk, which is exactly what our Subtraction Doctrine forbids.</p>
+    <p>The one thing worth doing: a 20-minute pattern diff to harvest any secret-detection regex we happen to lack. That's a chore, not an adoption.</p>
+  </div>
+
+  <h2>What each repo is</h2>
+  <table>
+    <thead><tr><th>Repo</th><th>What it does</th><th>Size / age</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="mono">kraulerson/<br>claude-dev-framework</span></td>
+        <td>Claude Code enforcement layer — 17 hooks, 14 rules, 5 project-type profiles. Blocks edits without tests, plans, changelog, etc.</td>
+        <td>~9★ · v4.3.1 · active</td>
+        <td><span class="pill p-reject">REJECT ADOPTION</span></td>
+      </tr>
+      <tr>
+        <td><span class="mono">ilkerbbb/<br>systematic-claw</span></td>
+        <td>OpenClaw TS plugin — 15 hard gates + task/plan/debug trackers + SQLite audit log. ~7,200 lines.</td>
+        <td>~12★ · plugin</td>
+        <td><span class="pill p-reject">REJECT ADOPTION</span></td>
+      </tr>
+      <tr>
+        <td><span class="mono">Claw-Guard/<br>ClawGuard</span></td>
+        <td>Security sidecar daemon — disables native tools, replaces them with <code>cg_*</code>, regex secret sanitizer, approval queue, web dashboard.</td>
+        <td>~27★ · <strong>5 commits</strong></td>
+        <td><span class="pill p-danger">DO NOT INSTALL</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>The coverage map</h2>
+  <p>Every capability the three repos advertise, mapped to the OpenClaw guard that already covers it. Green = we already have it (often stronger). Gold = partial gap.</p>
+  <div class="diagram" role="img" aria-label="Coverage map: repo capabilities mapped to existing OpenClaw guards, nearly all already covered">
+    <svg viewBox="0 0 900 470" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif">
+      <defs>
+        <marker id="arw" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+          <path d="M0,0 L8,4 L0,8 Z" fill="#b8b2a6"/>
+        </marker>
+      </defs>
+      <text x="150" y="26" text-anchor="middle" font-size="12" font-weight="700" fill="#7a746b" font-family="JetBrains Mono, monospace">REPO CAPABILITY</text>
+      <text x="740" y="26" text-anchor="middle" font-size="12" font-weight="700" fill="#7a746b" font-family="JetBrains Mono, monospace">ALREADY IN OPENCLAW</text>
+      <g>
+        <rect x="16" y="48" width="268" height="40" rx="7" fill="#fff" stroke="#e6e2d9"/>
+        <text x="30" y="72" font-size="13" fill="#1c1a17">read-before-edit / plan-before-done</text>
+        <line x1="284" y1="68" x2="472" y2="68" stroke="#b8b2a6" stroke-width="1.4" marker-end="url(#arw)"/>
+        <rect x="476" y="48" width="408" height="40" rx="7" fill="#e6efe8" stroke="#cfe0d4"/>
+        <text x="492" y="72" font-size="13" fill="#2f5238" font-family="JetBrains Mono, monospace">harness + standing directive</text>
+      </g>
+      <g>
+        <rect x="16" y="98" width="268" height="40" rx="7" fill="#fff" stroke="#e6e2d9"/>
+        <text x="30" y="122" font-size="13" fill="#1c1a17">dangerous-command block</text>
+        <line x1="284" y1="118" x2="472" y2="118" stroke="#b8b2a6" stroke-width="1.4" marker-end="url(#arw)"/>
+        <rect x="476" y="98" width="408" height="40" rx="7" fill="#e6efe8" stroke="#cfe0d4"/>
+        <text x="492" y="122" font-size="13" fill="#2f5238" font-family="JetBrains Mono, monospace">taint-blast gate + guard fabric</text>
+      </g>
+      <g>
+        <rect x="16" y="148" width="268" height="40" rx="7" fill="#fff" stroke="#e6e2d9"/>
+        <text x="30" y="172" font-size="13" fill="#1c1a17">doom-loop / repeat breaker</text>
+        <line x1="284" y1="168" x2="472" y2="168" stroke="#b8b2a6" stroke-width="1.4" marker-end="url(#arw)"/>
+        <rect x="476" y="148" width="408" height="40" rx="7" fill="#e6efe8" stroke="#cfe0d4"/>
+        <text x="492" y="172" font-size="13" fill="#2f5238" font-family="JetBrains Mono, monospace">loop-circuit-breaker.py (budget-keyed)</text>
+      </g>
+      <g>
+        <rect x="16" y="198" width="268" height="40" rx="7" fill="#fff" stroke="#e6e2d9"/>
+        <text x="30" y="222" font-size="13" fill="#1c1a17">secret sanitizer (regex)</text>
+        <line x1="284" y1="218" x2="472" y2="218" stroke="#b8b2a6" stroke-width="1.4" marker-end="url(#arw)"/>
+        <rect x="476" y="198" width="408" height="40" rx="7" fill="#e6efe8" stroke="#cfe0d4"/>
+        <text x="492" y="216" font-size="12.5" fill="#2f5238" font-family="JetBrains Mono, monospace">2-stage regex + local-LLM +</text>
+        <text x="492" y="232" font-size="12.5" fill="#2f5238" font-family="JetBrains Mono, monospace">egress/publish scrub (STRONGER)</text>
+      </g>
+      <g>
+        <rect x="16" y="248" width="268" height="40" rx="7" fill="#fff" stroke="#e6e2d9"/>
+        <text x="30" y="272" font-size="13" fill="#1c1a17">human approval queue</text>
+        <line x1="284" y1="268" x2="472" y2="268" stroke="#b8b2a6" stroke-width="1.4" marker-end="url(#arw)"/>
+        <rect x="476" y="248" width="408" height="40" rx="7" fill="#e6efe8" stroke="#cfe0d4"/>
+        <text x="492" y="272" font-size="12.5" fill="#2f5238" font-family="JetBrains Mono, monospace">hard-locks + Command Center + approval-signer</text>
+      </g>
+      <g>
+        <rect x="16" y="298" width="268" height="40" rx="7" fill="#fff" stroke="#e6e2d9"/>
+        <text x="30" y="322" font-size="13" fill="#1c1a17">durable task/plan state + rollback</text>
+        <line x1="284" y1="318" x2="472" y2="318" stroke="#b8b2a6" stroke-width="1.4" marker-end="url(#arw)"/>
+        <rect x="476" y="298" width="408" height="40" rx="7" fill="#e6efe8" stroke="#cfe0d4"/>
+        <text x="492" y="322" font-size="13" fill="#2f5238" font-family="JetBrains Mono, monospace">orchestration-checkpoint + lane-claim</text>
+      </g>
+      <g>
+        <rect x="16" y="348" width="268" height="44" rx="7" fill="#fff" stroke="#e6c98a"/>
+        <text x="30" y="368" font-size="13" fill="#1c1a17">per-project-TYPE gate profiles</text>
+        <text x="30" y="384" font-size="11" fill="#9a7d28" font-family="JetBrains Mono, monospace">the one partial gap</text>
+        <line x1="284" y1="370" x2="472" y2="370" stroke="#c9a24a" stroke-width="1.4" marker-end="url(#arw)"/>
+        <rect x="476" y="348" width="408" height="44" rx="7" fill="#f4edd8" stroke="#e6c98a"/>
+        <text x="492" y="368" font-size="12.5" fill="#7a5f16" font-family="JetBrains Mono, monospace">project IDENTITY yes; per-type</text>
+        <text x="492" y="384" font-size="12.5" fill="#7a5f16" font-family="JetBrains Mono, monospace">ENFORCEMENT profiles = not yet</text>
+      </g>
+      <g font-family="JetBrains Mono, monospace" font-size="11">
+        <rect x="16" y="418" width="14" height="14" rx="3" fill="#e6efe8" stroke="#cfe0d4"/>
+        <text x="38" y="429" fill="#7a746b">already covered (6 of 7)</text>
+        <rect x="230" y="418" width="14" height="14" rx="3" fill="#f4edd8" stroke="#e6c98a"/>
+        <text x="252" y="429" fill="#7a746b">partial gap — native idea, low urgency (1 of 7)</text>
+      </g>
+    </svg>
+  </div>
+
+  <h2>Why not just install one?</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>The Subtraction Doctrine says no</h3>
+      <p>Our own rule: no new gate without a retirement plan, and extend an existing gate before spawning a new process. A 7,200-line plugin or a standing daemon does the opposite — more code, more processes, more to break, and no off-ramp.</p>
+    </div>
+    <div class="card">
+      <h3>The security tool is the biggest risk</h3>
+      <p>ClawGuard wants the deepest access of the three — it disables our real tools, rewrites config, and runs a daemon that can touch everything. With 5 commits and no audit trail, installing an unvetted high-privilege interceptor is itself an attack surface. A security tool earns <em>more</em> scrutiny, not a pass.</p>
+    </div>
+  </div>
+
+  <h2>Codex red-team — what changed</h2>
+  <p>I had Codex attack the findings. Its verdict: "install none" stands, but don't wave the repos away — test the three things they do that OpenClaw might genuinely lack, then decide. I did. Here's the result.</p>
+  <table>
+    <thead><tr><th>Codex challenge</th><th>Checked against</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td>Durable task/plan state with rollback?</td><td><code>orchestration-checkpoint.py</code>, <code>lane-claim.py</code>, <code>plan_approval_hash.py</code></td><td><span class="pill p-covered">COVERED</span></td></tr>
+      <tr><td>Human approval queue for risky actions?</td><td><code>approval-signer</code>, <code>andon-tick.py</code>, Command Center, hard-locks</td><td><span class="pill p-covered">COVERED</span></td></tr>
+      <tr><td>Per-project-type enforcement profiles?</td><td><code>project-ids.json</code> (identity only)</td><td><span class="pill p-partial">PARTIAL GAP</span></td></tr>
+      <tr class="steve-pick"><td>"Frontier-ahead" claim overconfident?</td><td>Softened: ahead on injection defense specifically, pending a live secret-injection test</td><td><span class="pill p-partial">CORRECTED</span></td></tr>
+    </tbody>
+  </table>
+  <div class="note">We reached accord in one round: the recommended action — install none — never moved. I adopted every framing fix Codex raised and verified each candidate gap against a named file, so the finding now rests on evidence, not on reading two file headers.</div>
+
+  <h2>The two things actually worth doing</h2>
+  <div class="grid2">
+    <div class="card steve-pick">
+      <h3>1 · Steal the regex, not the repo</h3>
+      <p>Diff ClawGuard's ~30 secret-detection patterns against ours (20 min). Add any we're missing to our own scrubber. Gated on first confirming ours isn't already a superset.</p>
+      <p><span class="pill p-med">MED priority</span></p>
+    </div>
+    <div class="card">
+      <h3>2 · Park the one real idea</h3>
+      <p>Log "per-project-type gate profiles" to the frontier-gap ledger as a native build — only worth it if your project mix stops being mostly web design/dev. Not now.</p>
+      <p><span class="pill p-med">LOW priority</span></p>
+    </div>
+  </div>
+
+  <h2>The prompt contract (source of truth)</h2>
+  <p>Per your ask, the decision is codified into a durable contract so future sessions don't re-litigate this. It lives at <code>~/projects/openclaw-guardrail-repo-review/CONTRACT.md</code> and governs how OpenClaw evaluates <em>any</em> external guardrail framework, not just these three. It was itself red-teamed by Codex.</p>
+  <div class="note warn">
+    <strong>The rule, in one breath:</strong> For any external guardrail repo — (1) grep our fabric first; if we already do it, reject adoption. (2) A new process needs a retirement plan and must prove no existing gate can be extended. (3) Anything that intercepts tools or runs a daemon must pass an audit — a low-commit high-privilege interceptor is an automatic no. (4) If ours is genuinely weaker, re-build the idea natively, never install the foreign code. (5) Even a rejected repo can still serve as a benchmark. <strong>Default posture: adopt none.</strong>
+  </div>
+
+  <h2>Confidence &amp; how this could be wrong</h2>
+  <table>
+    <thead><tr><th>Claim</th><th>Confidence</th><th>Falsifying test</th></tr></thead>
+    <tbody>
+      <tr><td>Repos are real, low-star, nascent</td><td><span class="pill p-high">HIGH</span></td><td>Fetched READMEs + star counts today</td></tr>
+      <tr><td>OpenClaw already covers 6 of 7 capabilities</td><td><span class="pill p-high">HIGH</span></td><td>Named a live guard file for each</td></tr>
+      <tr><td>We're ahead on injection defense</td><td><span class="pill p-med">MED</span></td><td>Run a live test: feed a plaintext + base64 secret through a tool result, confirm our 2-stage catches what ClawGuard's regex would miss</td></tr>
+    </tbody>
+  </table>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    OpenClaw · Guardrail repo review · 2026-09-17<br>
+    Method: README + code fetch → evidence grep of ~/.openclaw/bin → Codex red-team of findings (converged, 1 round) → reconciled → prompt contract → Codex red-team of the contract.<br>
+    Evidence files: loop-circuit-breaker.py · hook-posttooluse-injection-guard.py · taint-llm-check.py · orchestration-checkpoint.py · lane-claim.py · approval-signer · andon-tick.py<br>
+    Source of truth: ~/projects/openclaw-guardrail-repo-review/CONTRACT.md · Governing doctrine: subtraction-doctrine.md
+  </div>
+</footer>
+</body>
+</html>
