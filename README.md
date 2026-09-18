@@ -1,5 +1,10 @@
 # OpenClaw Guardrail / Gating Repo Review
 
+[![License: MIT](https://img.shields.io/github/license/thomasdigital/openclaw-guardrail-repo-review?color=E8552D)](LICENSE)
+[![Last commit](https://img.shields.io/github/last-commit/thomasdigital/openclaw-guardrail-repo-review?color=E8552D)](https://github.com/thomasdigital/openclaw-guardrail-repo-review/commits/main)
+[![Repos reviewed](https://img.shields.io/badge/repos%20reviewed-3-E8552D)](#the-three-repos-reviewed-2026-09-17)
+[![Verdict](https://img.shields.io/badge/verdict-adopt%20none-1c1a17)](#outcome)
+
 A frontier-level review of three third-party agent-safety repos against OpenClaw's
 existing guard/hook fabric, plus the decision contract and evidence that came out of it.
 
